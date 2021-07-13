@@ -4,7 +4,7 @@ import Search from "./Search";
 import Stats from "./Stats";
 import Listing from "./Listings";
 
-import { TextField, Grid, Box, Button } from "@material-ui/core";
+import Container from "react-bootstrap/Container";
 
 export default function DashBoard() {
   const [cars, setCars] = useState();
@@ -23,14 +23,16 @@ export default function DashBoard() {
     });
   }
   return (
-    <Grid>
+    <Container>
       <Search getSetData={getSetData}></Search>
-      {cars && stats && (
+      <hr></hr>
+      {cars && cars.length > 0 && stats && (
         <>
           <Stats stats={stats}></Stats>
           <Listing cars={cars}></Listing>
         </>
       )}
-    </Grid>
+      {cars.length == 0 && <p>no results</p>}
+    </Container>
   );
 }

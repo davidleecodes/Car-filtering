@@ -1,19 +1,35 @@
 import React from "react";
-import { TextField, Grid, Box, Button, Typography } from "@material-ui/core";
+
+import Container from "react-bootstrap/Container";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 export default function Stats({ stats }) {
   return (
-    <Grid>
-      <Box mb={10} />
-      <Box mx={4}>
-        <Grid container direction="row">
-          <Typography>{stats.totalNumber}</Typography>
-          <Typography>{stats.totalSubGroup}</Typography>
-          <Typography>{stats.lowestPrice}</Typography>
-          <Typography>{stats.medianPrice}</Typography>
-          <Typography>{stats.highestPrice}</Typography>
-        </Grid>
-      </Box>
-    </Grid>
+    <Container className={"my-5"}>
+      <Row>
+        <Col>
+          <p className="fw-bold">Total </p>
+          <p>{stats?.totalNumber}</p>
+        </Col>
+
+        <Col>
+          <p className="fw-bold"> SubGroup</p>
+          <p>{stats?.totalSubGroup}</p>
+        </Col>
+        <Col>
+          <p className="fw-bold">Lowest </p>
+          <p> {stats?.lowestPrice}</p>
+        </Col>
+        <Col>
+          <p className="fw-bold">Median </p>
+          <p>{stats?.medianPrice}</p>
+        </Col>
+        <Col>
+          <p className="fw-bold">Highest </p>
+          <p> {stats?.highestPrice}</p>
+        </Col>
+      </Row>
+    </Container>
   );
 }

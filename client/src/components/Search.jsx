@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { TextField, Grid, Box, Button } from "@material-ui/core";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 export default function Search({ getSetData }) {
   const defaultSearch = {
@@ -14,99 +14,102 @@ export default function Search({ getSetData }) {
     max: "",
   };
   const [searchQuery, setSearchQuery] = useState(defaultSearch);
+  const [validated, setValidated] = useState(null);
 
   function handleChange(e) {
     setSearchQuery({ ...searchQuery, [e.target.name]: e.target.value });
+    setValidated(null);
   }
 
-  function handleSearch(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    getSetData(searchQuery);
-    setSearchQuery(defaultSearch);
+    const { min, max } = searchQuery;
+    if (min && max && min > max) {
+      setValidated(false);
+    } else {
+      getSetData(searchQuery);
+      setSearchQuery(defaultSearch);
+    }
   }
   return (
-    <Grid>
-      <Box mb={20} />
-      <Box mx={4}>
-        <Grid container justifyContent="space-between">
-          <TextField
-            id="make"
-            label="Make"
-            variant="outlined"
-            name="make"
-            value={searchQuery.make}
-            onChange={handleChange}
-          />
-          <TextField
-            id="model"
-            label="Model"
-            variant="outlined"
-            name="model"
-            value={searchQuery.model}
-            onChange={handleChange}
-          />
-          <TextField
-            id="year"
-            label="Year"
-            variant="outlined"
-            name="year"
-            value={searchQuery.year}
-            onChange={handleChange}
-          />
+    <Container className="mb-5">
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Row className="g-2">
+          <Col md>
+            <Form.Group controlId="make">
+              <Form.Label>Make</Form.Label>
+              <Form.Control
+                type="text"
+                name="make"
+                value={searchQuery.make}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
 
-          <FormControl variant="outlined">
-            <InputLabel id="min-label">min price</InputLabel>
-            <Select
-              labelId="min-label"
-              id="min"
-              value={searchQuery.min}
-              onChange={handleChange}
-              name="min"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10000}>10k</MenuItem>
-              <MenuItem value={20000}>20k</MenuItem>
-              <MenuItem value={30000}>30k</MenuItem>
-              <MenuItem value={40000}>40k</MenuItem>
-              <MenuItem value={50000}>50k</MenuItem>
-              <MenuItem value={60000}>60k</MenuItem>
-              <MenuItem value={70000}>70k</MenuItem>
-              <MenuItem value={80000}>80k</MenuItem>
-              <MenuItem value={90000}>90k</MenuItem>
-              <MenuItem value={100000}>100k</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl variant="outlined">
-            <InputLabel id="max-label">max price</InputLabel>
-            <Select
-              labelId="max-label"
-              id="max"
-              value={searchQuery.max}
-              onChange={handleChange}
-              name="max"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10000}>10k</MenuItem>
-              <MenuItem value={20000}>20k</MenuItem>
-              <MenuItem value={30000}>30k</MenuItem>
-              <MenuItem value={40000}>40k</MenuItem>
-              <MenuItem value={50000}>50k</MenuItem>
-              <MenuItem value={60000}>60k</MenuItem>
-              <MenuItem value={70000}>70k</MenuItem>
-              <MenuItem value={80000}>80k</MenuItem>
-              <MenuItem value={90000}>90k</MenuItem>
-              <MenuItem value={100000}>100k</MenuItem>
-            </Select>
-          </FormControl>
-          <Button variant="contained" color="primary" onClick={handleSearch}>
+          <Col md>
+            <Form.Group controlId="model">
+              <Form.Label>Model</Form.Label>
+              <Form.Control
+                type="text"
+                name="model"
+                value={searchQuery.model}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
+
+          <Col md>
+            <Form.Group controlId="year">
+              <Form.Label>Year</Form.Label>
+              <Form.Control
+                type="text"
+                name="year"
+                value={searchQuery.year}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row className="g-2">
+          <Col md>
+            <Form.Group controlId="min">
+              <Form.Label>Min Price</Form.Label>
+              <Form.Control
+                type="text"
+                name="min"
+                value={searchQuery.min}
+                onChange={handleChange}
+                isInvalid={validated === false}
+              />
+              <Form.Control.Feedback type="invalid">
+                Min need tobe less than max
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+
+          <Col md>
+            <Form.Group controlId="max">
+              <Form.Label>Max Price</Form.Label>
+              <Form.Control
+                type="text"
+                name="max"
+                value={searchQuery.max}
+                onChange={handleChange}
+                isInvalid={validated === false}
+              />
+              <Form.Control.Feedback type="invalid">
+                Min need tobe less than max
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row className="w-100">
+          <Button variant="primary" className="mx-auto" type="submit">
             Search
           </Button>
-        </Grid>
-      </Box>
-    </Grid>
+        </Row>
+      </Form>
+    </Container>
   );
 }
