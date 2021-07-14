@@ -4,12 +4,6 @@ import Search from "./components/Search";
 import Stats from "./components/Stats";
 import Listing from "./components/Listings";
 
-test("renders navBar rodo", () => {
-  render(<App />);
-  const linkElement = screen.getByText(/rodo/i);
-  expect(linkElement).toBeInTheDocument();
-});
-
 test("renders Search", () => {
   render(<Search />);
   const linkElement = screen.getByText(/search/i);
@@ -18,12 +12,12 @@ test("renders Search", () => {
 
 test("renders Stats", () => {
   render(<Stats />);
-  const linkElement = screen.getByText(/subgroup/i);
+  const linkElement = screen.getByText(/total vehicles matched/i);
   expect(linkElement).toBeInTheDocument();
 });
 
 test("renders Listing", () => {
   render(<Listing />);
-  const linkElement = screen.getByText(/model/i);
+  const linkElement = screen.getByText(/matches by make and model/i);
   expect(linkElement).toBeInTheDocument();
 });

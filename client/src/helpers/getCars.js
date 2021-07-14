@@ -8,6 +8,7 @@ export async function getCars(query = {}) {
   return await axios
     .get(`${url}${query}`)
     .then((res) => {
+      console.log(res.data);
       const { cars, ...stats } = res.data;
       const carsWithIds = cars.map((car) => ({ ...car, id: uuidv4() }));
       return { cars: carsWithIds, ...stats };
@@ -30,4 +31,16 @@ function queryBuilder(query) {
     res = `?${res}`;
     return res;
   }
+}
+
+export async function getMakeOptions(make) {
+  return await axios
+    .get(`${REACT_APP_SERVER}make/${make}`)
+    .then((res) => {
+      console.log(res.data);
+      return res.data;
+    })
+    .catch(() => ({
+      error: { messge: "Unable to connect to server.Please try again" },
+    }));
 }
