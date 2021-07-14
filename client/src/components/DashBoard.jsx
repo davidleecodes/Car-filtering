@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getCars, getMakeOptions } from "../helpers/getCars";
+import { getCars, getOptions } from "../helpers/getCars";
 import Search from "./Search";
 import Stats from "./Stats";
 import Listing from "./Listings";
@@ -7,9 +7,10 @@ import Listing from "./Listings";
 import Container from "react-bootstrap/Container";
 
 export default function DashBoard() {
+  const [allCars, setAllCars] = useState();
   const [cars, setCars] = useState();
   const [stats, setStats] = useState();
-  const [makeOptions, setMakeOptions] = useState();
+  const [options, setOptions] = useState();
   useEffect(() => {
     getSetData();
   }, []);
@@ -19,12 +20,16 @@ export default function DashBoard() {
       const { cars, ...stats } = res;
       setCars(cars);
       setStats(stats);
+      if (query === {}) {
+        setAllCars(cars);
+        getSetOptions({}, cars);
+      }
     });
   }
 
-  function getSetMakeOptions(make) {
-    getMakeOptions(make).then((res) => {
-      setMakeOptions(res);
+  function getSetOptions(query, cars = allCars) {
+    getOptions(query, cars).then((res) => {
+      setOptions(res);
     });
   }
 
@@ -32,8 +37,8 @@ export default function DashBoard() {
     <Container>
       <Search
         getSetData={getSetData}
-        getSetMakeOptions={getSetMakeOptions}
-        makeOptions={makeOptions}
+        getSetOptions={getSetOptions}
+        options={options}
       ></Search>
       <Stats stats={stats}></Stats>
       <Listing cars={cars}></Listing>

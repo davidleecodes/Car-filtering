@@ -1,26 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function Search({ getSetData, getSetMakeOptions, makeOptions }) {
+export default function Search({ getSetData, getSetOptions, options }) {
   const defaultSearch = {
     make: "",
-    model: "All models",
+    model: "",
     year: "",
     max: "",
   };
   const [searchQuery, setSearchQuery] = useState(defaultSearch);
 
+  useEffect(() => {
+    if (options && options.models.length === 0) {
+      let query = { ...defaultSearch, make: searchQuery.make };
+      setSearchQuery(query);
+      getSetOptions(query);
+    }
+  }, [options]);
+
   function handleChange(e) {
-    if (e.target.name === "make") handleMake(e.target.value);
-    setSearchQuery({ ...searchQuery, [e.target.name]: e.target.value });
+    let query = { ...searchQuery, [e.target.name]: e.target.value };
+    setSearchQuery(query);
+    getSetOptions(query);
   }
 
-  function handleMake(make) {
-    getSetMakeOptions(make);
-  }
   function handleSubmit(e) {
     e.preventDefault();
     getSetData(searchQuery);
-    // setSearchQuery(defaultSearch);
+    setSearchQuery(defaultSearch);
+    getSetOptions({});
   }
   return (
     <div>
@@ -133,8 +140,8 @@ export default function Search({ getSetData, getSetMakeOptions, makeOptions }) {
               onChange={handleChange}
             >
               <option value="">All models</option>
-              {makeOptions &&
-                makeOptions.models.map((model) => (
+              {options &&
+                options.models.map((model) => (
                   <option value={model} key={model}>
                     {model}
                   </option>
@@ -151,15 +158,15 @@ export default function Search({ getSetData, getSetMakeOptions, makeOptions }) {
               onChange={handleChange}
             >
               <option value="">Any</option>
-              {!makeOptions && (
+              {!options && (
                 <>
                   <option value="">2021</option>
                   <option value="">2020</option>
                   <option value="">2019</option>
                 </>
               )}
-              {makeOptions &&
-                makeOptions.years.sort().map((year) => (
+              {options &&
+                options.years.sort().map((year) => (
                   <option value={year} key={year}>
                     {year}
                   </option>
