@@ -1,0 +1,29 @@
+{
+  "name": "engineering_exercise",
+  "version": "1.0.0",
+  "description": "# Problem Statement:",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js",
+    "test": "jest --verbose ./server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Honcker/engineering_exercise.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Honcker/engineering_exercise/issues"
+  },
+  "homepage": "https://github.com/Honcker/engineering_exercise#readme",
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "json-server": "^0.16.3",
+    "nodemon": "^2.0.12"
+  }
+}
